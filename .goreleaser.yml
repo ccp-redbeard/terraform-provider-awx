@@ -48,6 +48,11 @@ signs:
       - "--detach-sign"
       - "${artifact}"
 release:
+  # The registry reads the protocol version from this file; without it the
+  # registry assumes 5.0. terraform-plugin-sdk/v2 is protocol 5, so be explicit.
+  extra_files:
+    - glob: 'terraform-registry-manifest.json'
+      name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
   # If you want to manually examine the release before its live, uncomment this line:
   draft: false
 changelog:

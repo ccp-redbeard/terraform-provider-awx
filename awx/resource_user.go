@@ -1,27 +1,28 @@
 /*
 *TBD*
 
-Example Usage
+# Example Usage
 
 ```hcl
-data "awx_organization" "default" {
-  name = "Default"
-}
 
-data "awx_organization_role" "orga_read" {
-  name            = "Read"
-  organization_id = awx_organization.default.id
-}
+	data "awx_organization" "default" {
+	  name = "Default"
+	}
 
-resource "awx_user" "my_user" {
-  username = "my_user"
-  password = "my_password"
-  role_entitlement {
-    role_id = data.awx_organization_role.orga_read.id
-  }
-}
+	data "awx_organization_role" "orga_read" {
+	  name            = "Read"
+	  organization_id = awx_organization.default.id
+	}
+
+	resource "awx_user" "my_user" {
+	  username = "my_user"
+	  password = "my_password"
+	  role_entitlement {
+	    role_id = data.awx_organization_role.orga_read.id
+	  }
+	}
+
 ```
-
 */
 package awx
 
@@ -240,8 +241,32 @@ func resourceUserRead(ctx context.Context, d *schema.ResourceData, m interface{}
 	d.Set("is_superuser", res.IsSuperUser)
 	d.Set("is_system_auditor", res.IsSystemAuditor)
 
+	// role_entitlement is additive: record only the roles this resource already
+	// tracks, not every role the user happens to hold. Recording all of them made
+	// update() delete anything granted elsewhere -- AWX has no credential-role
+	// data source until awx_credential_role, so credential Use could only be
+	// granted through the API, and the next apply revoked it again.
+	//
+	// An empty set means there is nothing to intersect with (a fresh import), so
+	// record everything and let the operator prune the config.
+	tracked := make(map[int]bool)
+	if raw, ok := d.GetOk("role_entitlement"); ok {
+		for _, v := range raw.(*schema.Set).List() {
+			elem, isMap := v.(map[string]interface{})
+			if !isMap {
+				continue
+			}
+			if roleID, isInt := elem["role_id"].(int); isInt {
+				tracked[roleID] = true
+			}
+		}
+	}
+
 	var entlist []interface{}
 	for _, v := range entitlements {
+		if len(tracked) > 0 && !tracked[v.ID] {
+			continue
+		}
 		elem := make(map[string]interface{})
 		elem["role_id"] = v.ID
 		entlist = append(entlist, elem)
