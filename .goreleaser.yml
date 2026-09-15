@@ -33,6 +33,13 @@ archives:
 - format: zip
   name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
 checksum:
+  # The registry requires every release asset to appear in SHA256SUMS, the
+  # manifest included -- listing it only under release.extra_files attaches it
+  # to the release but leaves it unchecksummed, and the registry then refuses
+  # the version.
+  extra_files:
+    - glob: 'terraform-registry-manifest.json'
+      name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
   name_template: '{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
   algorithm: sha256
 signs:
