@@ -1,3 +1,10 @@
+## [0.30.1](https://github.com/ccp-redbeard/terraform-provider-awx/compare/v0.30.0...v0.30.1) (2026-09-15)
+
+
+### Bug Fixes
+
+* checksum the registry manifest ([#4](https://github.com/ccp-redbeard/terraform-provider-awx/issues/4)) ([9151d3f](https://github.com/ccp-redbeard/terraform-provider-awx/commit/9151d3fc430c6161ca6037a491c3a41d9eed55e8))
+
 # [0.30.0](https://github.com/ccp-redbeard/terraform-provider-awx/compare/v0.29.1...v0.30.0) (2026-09-15)
 
 
