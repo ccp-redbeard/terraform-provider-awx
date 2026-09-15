@@ -1,3 +1,16 @@
+# [0.30.0](https://github.com/ccp-redbeard/terraform-provider-awx/compare/v0.29.1...v0.30.0) (2026-09-15)
+
+
+### Bug Fixes
+
+* let the release job push with GITHUB_TOKEN ([#2](https://github.com/ccp-redbeard/terraform-provider-awx/issues/2)) ([2273e30](https://github.com/ccp-redbeard/terraform-provider-awx/commit/2273e3006ada67e65abc5af78491fda76015570f)), closes [#1](https://github.com/ccp-redbeard/terraform-provider-awx/issues/1)
+* stop semantic-release commenting on inherited PR references ([#3](https://github.com/ccp-redbeard/terraform-provider-awx/issues/3)) ([ff7953b](https://github.com/ccp-redbeard/terraform-provider-awx/commit/ff7953b47e1137c5bad7828ffa90e0eeffaf2f98)), closes [#2](https://github.com/ccp-redbeard/terraform-provider-awx/issues/2) [rest/pulls/pulls#list-commits-on-a-pull-request](https://github.com/rest/pulls/pulls/issues/list-commits-on-a-pull-request)
+
+
+### Features
+
+* add awx_credential_role and stop pruning unmanaged user roles ([e715a51](https://github.com/ccp-redbeard/terraform-provider-awx/commit/e715a5141032fc65492b09e3bb5269092fd47170))
+
 # 1.0.0 (2026-09-15)
 
 
